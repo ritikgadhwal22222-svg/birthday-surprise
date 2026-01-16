@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.container {
+  position: relative;
+  text-align: center;
+}
+
+h1 {
+  color: white;
+  margin-bottom: 30px;
+}
+
+/* 🎂 Cake */
+#cake {
+  width: 200px;
+  height: 120px;
+  background: pink;
+  border-radius: 10px;
+  position: relative;
+  margin: auto;
+}
+
+#cake::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 30px;
+  background: red;
+  border-radius: 5px;
+}
+
+/* 🔪 Knife */
+#knife {
+  width: 120px;
+  height: 10px;
+  background: silver;
+  position: absolute;
+  right: -150px;
+  top: 120px;
+  cursor: grab;
+}
+
+#knife::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: -5px;
+  width: 20px;
+  height: 20px;
+  background: brown;
+}
+
+/* ❤️ Hearts */
+.heart {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: red;
+  transform: rotate(45deg);
+  animation: fly 1s forwards;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: red;
+  border-radius: 50%;
+}
+
+.heart::before { top: -7px; }
+.heart::after { left: -7px; }
+
+@keyframes fly {
+  to {
+    transform: translate(var(--x), var(--y)) rotate(45deg) scale(0);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1 id="title">Happy Birthday Khuchupuchu 😘💐</h1>
+
+  <div id="cake"></div>
+  <div id="knife"></div>
+</div>
+
+<script>
+const knife = document.getElementById("knife");
+const cake = document.getElementById("cake");
+const title = document.getElementById("title");
+
+let dragging = false;
+let done = false;
+
+knife.onmousedown = () => dragging = true;
+document.onmouseup = () => dragging = false;
+
+document.onmousemove = (e) => {
+  if (!dragging || done) return;
+
+  knife.style.left = (e.pageX - 60) + "px";
+  knife.style.top = (e.pageY - 5) + "px";
+
+  const k = knife.getBoundingClientRect();
+  const c = cake.getBoundingClientRect();
+
+  if (
+    k.left < c.right &&
+    k.right > c.left &&
+    k.top < c.bottom &&
+    k.bottom > c.top
+  ) {
+    cutCake();
+  }
+};
+
+function cutCake() {
+  done = true;
+  title.innerText = "Happy Birthday Baby 💖";
+
+  for (let i = 0; i < 30; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.style.left = "50%";
+    h.style.top = "50%";
+    h.style.setProperty("--x", (Math.random()*300 - 150) + "px");
+    h.style.setProperty("--y", (Math.random()*300 - 150) + "px");
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1000);
+  }
+}
+</script>
+
+</body>
+</html>
